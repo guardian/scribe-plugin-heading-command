@@ -1,7 +1,7 @@
 {
-  "name": "scribe-plugin-blockquote-command",
+  "name": "scribe-plugin-heading-command",
   "version": "0.1.0",
-  "main": "src/scribe-plugin-blockquote-command.js",
+  "main": "src/scribe-plugin-heading-command.js",
   "devDependencies": {
     "plumber": "~0.3.0",
     "plumber-all": "~0.3.0",
@@ -12,6 +12,6 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/guardian/scribe-plugin-blockquote-command.git"
+    "url": "git://github.com/guardian/scribe-plugin-heading-command.git"
   }
 }
