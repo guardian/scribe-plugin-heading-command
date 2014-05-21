@@ -1,5 +1,7 @@
 {
   "name": "scribe-plugin-blockquote-command",
+  "version": "0.1.0",
+  "main": "src/scribe-plugin-blockquote-command.js",
   "devDependencies": {
     "plumber": "~0.3.0",
     "plumber-all": "~0.3.0",
@@ -7,5 +9,9 @@
     "plumber-requirejs": "~0.3.0",
     "plumber-uglifyjs": "~0.3.0",
     "plumber-write": "~0.3.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/guardian/scribe-plugin-blockquote-command.git"
   }
 }
