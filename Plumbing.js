@@ -6,7 +6,7 @@
 
 var all       = require('plumber-all');
 var glob      = require('plumber-glob');
-var requireJS = require('plumber-requirejs');
+var traceur   = require('plumber-traceur');
 var uglifyJS  = require('plumber-uglifyjs');
 var write     = require('plumber-write');
 
@@ -20,7 +20,7 @@ module.exports = function (pipelines) {
 
   pipelines['build'] = [
     glob('src/scribe-plugin-heading-command.js'),
-    requireJS(),
+    traceur.toAmd(),
     writeBoth
   ];
 };
