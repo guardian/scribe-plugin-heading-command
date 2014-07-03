@@ -20,6 +20,23 @@ define(function () {
 
       headingCommand.execute = function () {
         if (this.queryState()) {
+          /**
+           * Chrome will more the text outside of the
+           * h2 and leave the h2 in place. This issues does not  occur
+           * on Firefox. The patch is applied here to avoid performing
+           * unnecessary work every time 'formatBlock' is called.
+           *
+           * See [js-bin link] for inconsistencies
+           **/
+          var selection = new scribe.api.Selection();
+          var range = selection.range;
+          var ancestor = range.commonAncestorContainer;
+          var nextSibling = ancestor.nextElementSibling;
+
+          if (nextSibling.nodeName === "H2" && nextSibling.innerHTML === "") {
+            nextSibling.remove();
+          }
+
           scribe.api.Command.prototype.execute.call(this, '<p>');
         } else {
           scribe.api.Command.prototype.execute.call(this, tag);
