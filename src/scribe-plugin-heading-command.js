@@ -1,4 +1,4 @@
-define(function () {
+define(function (useAlternativeImplementation) {
 
   /**
    * This plugin adds a command for headings.
@@ -8,7 +8,8 @@ define(function () {
 
   return function (level) {
     return function (scribe) {
-      var tag = '<h' + level + '>';
+      var tagName = 'h' + level;
+      var tag = '<' + tagName + '>';
       var nodeName = 'H' + level;
       var commandName = 'h' + level;
 
@@ -18,12 +19,49 @@ define(function () {
 
       var headingCommand = new scribe.api.Command('formatBlock');
 
-      headingCommand.execute = function () {
-        if (this.queryState()) {
-          scribe.api.Command.prototype.execute.call(this, '<p>');
-        } else {
-          scribe.api.Command.prototype.execute.call(this, tag);
+      /**
+       * Alternative implementation is manual and works under Shadow DOM with WebComponents.js polyfill
+       */
+      if (useAlternativeImplementation) {
+        headingCommand.execute = function () {
+          scribe.transactionManager.run(function () {
+            var selection = this.getSelection();
+            var nodeToReplace = selection.anchorNode.parentNode;
+            var newNode;
+            if (nodeToReplace.nodeName == nodeName) {
+              newNode = document.createElement('p');
+            } else {
+              newNode = document.createElement(tag);
+            }
+            newNode.innerHTML = nodeToReplace.innerHTML;
+            nodeToReplace.parentNode.replaceChild(newNode, nodeToReplace);
+            selection.removeAllRanges();
+            var range = document.createRange();
+            range.selectNodeContents(newNode.childNodes[0]);
+            selection.addRange(range);
+          }.bind(this));
+        };
+      } else {
+        headingCommand.execute = function () {
+          if (this.queryState()) {
+            scribe.api.Command.prototype.execute.call(this, '<p>');
+          } else {
+            scribe.api.Command.prototype.execute.call(this, tag);
+          }
+        };
+      }
+
+      /**
+       * Getting selection while being ready that it might be within Shadow DOM
+       */
+      headingCommand.getSelection = function () {
+        var activeElement = document.activeElement,
+            lastRoot = document;
+        while (activeElement.shadowRoot) {
+          lastRoot = activeElement.shadowRoot;
+          activeElement = activeElement.shadowRoot.activeElement;
         }
+        return lastRoot.getSelection();
       };
 
       headingCommand.queryState = function () {
