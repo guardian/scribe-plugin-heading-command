@@ -1,4 +1,4 @@
-define(function (useAlternativeImplementation) {
+define(function () {
 
   /**
    * This plugin adds a command for headings.
@@ -6,7 +6,7 @@ define(function (useAlternativeImplementation) {
 
   'use strict';
 
-  return function (level) {
+  return function (level, useAlternativeImplementation) {
     return function (scribe) {
       var tagName = 'h' + level;
       var tag = '<' + tagName + '>';
