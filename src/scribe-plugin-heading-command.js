@@ -31,7 +31,7 @@ define(function () {
             if (nodeToReplace.nodeName == nodeName) {
               newNode = document.createElement('p');
             } else {
-              newNode = document.createElement(tag);
+              newNode = document.createElement(tagName);
             }
             newNode.innerHTML = nodeToReplace.innerHTML;
             nodeToReplace.parentNode.replaceChild(newNode, nodeToReplace);
